@@ -15,12 +15,12 @@
 
 {% if os_family == 'RedHat' %}
     {% set source_fns = "/etc/rc.d/init.d/functions" %}
-    {% set daemon = "daemon" %}
+    {% set daemon = "daemon supervisord" %}
     {% set killproc = "killproc" %}
     {% set status = "status supervisord" %}
 {% elif os_family == 'Debian' %}
     {% set source_fns = "/lib/lsb/init-functions" %}
-    {% set daemon = "start-stop-daemon --start --quiet --exec" %}
+    {% set daemon = "start-stop-daemon --start --quiet --exec /usr/local/bin/supervisord" %}
     {% set killproc = "pkill" %}
     {% set status = "status_of_proc $(which supervisord) supervisord" %}
 {% endif %}
@@ -32,7 +32,7 @@ RETVAL=0
 
 start() {
     echo -n $"Starting supervisord: "
-    {{ daemon }} supervisord
+    {{ daemon }}
     RETVAL=$?
     echo
     [ $RETVAL -eq 0 ] && touch /var/lock/subsys/supervisord
