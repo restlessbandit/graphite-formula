@@ -180,8 +180,9 @@ restart-supervisor-for-graphite:
     - context:
       graphite_host: {{ graphite.host }}
 
-nginx:
+nginx-installed-for-supervisor:
   service.running:
+    - name: nginx
     - enable: True
     - reload: True
     - watch:
