@@ -27,6 +27,9 @@ supervisor:
         [rpcinterface:supervisor]
         supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
+        [unix_http_server]
+        file=/var/run/supervisor.sock
+
         [supervisorctl]
         serverurl=unix:///var/run/supervisor.sock
 
