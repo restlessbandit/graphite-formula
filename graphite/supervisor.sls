@@ -36,6 +36,8 @@ supervisor:
     - source: salt://graphite/files/supervisor/supervisor.init
     - mode: 755
     - template: jinja
+    - context:
+      os_family: {{ grains['os_family'] }}
 
 supervisor-service:
   service:

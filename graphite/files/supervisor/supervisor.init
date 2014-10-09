@@ -13,14 +13,26 @@
 # pidfile: /var/run/supervisord.pid
 #
 
+{% if os_family == 'RedHat' %}
+    {% set source_fns = "/etc/rc.d/init.d/functions" %}
+    {% set daemon = "daemon" %}
+    {% set killproc = "killproc" %}
+    {% set status = "status supervisord" %}
+{% elif os_family == 'Debian' %}
+    {% set source_fns = "/lib/lsb/init-functions" %}
+    {% set daemon = "start-stop-daemon --start --quiet --exec" %}
+    {% set killproc = "pkill" %}
+    {% set status = "status_of_proc $(which supervisord) supervisord" %}
+{% endif %}
+
 # source function library
-. /etc/rc.d/init.d/functions
+. {{ source_fns }}
 
 RETVAL=0
 
 start() {
     echo -n $"Starting supervisord: "
-    daemon supervisord
+    {{ daemon }} supervisord
     RETVAL=$?
     echo
     [ $RETVAL -eq 0 ] && touch /var/lock/subsys/supervisord
@@ -28,7 +40,7 @@ start() {
 
 stop() {
     echo -n $"Stopping supervisord: "
-    killproc supervisord
+    {{ killproc }} supervisord
     echo
     [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/supervisord
 }
@@ -52,7 +64,7 @@ case "$1" in
     [ -f /var/lock/subsys/supervisord ] && restart
     ;;
   status)
-    status supervisord
+      {{ status }}
     RETVAL=$?
     ;;
   *)
