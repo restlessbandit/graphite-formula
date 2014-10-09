@@ -39,11 +39,7 @@ supervisor:
 
 supervisor-service:
   service:
-{%- if grains['os_family'] == 'Debian' %}
-    - name: supervisor
-{%- elif grains['os_family'] == 'RedHat' %}
     - name: supervisord
-{%- endif %}
     - running
     - reload: True
     - enable: True
