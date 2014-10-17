@@ -12,7 +12,9 @@ install-deps:
       - python-pip
       - nginx
       - gcc
+{%- if graphite.dbtype == 'mysql' %}
       - MySQL-python
+{%- endif %}
 {%- if grains['os_family'] == 'Debian' %}
       - python-dev
       - sqlite3

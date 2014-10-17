@@ -8,7 +8,12 @@ include:
   - mysql.server
 
 MySQL-python:
-  pkg.installed
+  pkg.installed:
+{%- if grains['os_family'] == 'Debian' %}
+    - name: python-mysqldb
+{%- else %}
+    - name: MySQL-python
+{%- endif %}
 
 create-graphite-database:
   cmd.run:
