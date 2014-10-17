@@ -27,11 +27,13 @@
     {% set daemon = "daemon supervisord" %}
     {% set killproc = "killproc" %}
     {% set status = "status supervisord" %}
+    {% set lockfile = "/var/lock/subsys/supervisord" %}
 {% elif os_family == 'Debian' %}
     {% set source_fns = "/lib/lsb/init-functions" %}
     {% set daemon = "start-stop-daemon --start --quiet --exec /usr/local/bin/supervisord" %}
     {% set killproc = "pkill" %}
     {% set status = "status_of_proc $(which supervisord) supervisord" %}
+    {% set lockfile = "/var/lock/supervisord" %}
 {% endif %}
 
 # source function library
@@ -44,14 +46,14 @@ start() {
     {{ daemon }}
     RETVAL=$?
     echo
-    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/supervisord
+    [ $RETVAL -eq 0 ] && touch {{ lockfile }}
 }
 
 stop() {
     echo -n $"Stopping supervisord: "
     {{ killproc }} supervisord
     echo
-    [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/supervisord
+    [ $RETVAL -eq 0 ] && rm -f {{ lockfile }}
 }
 
 restart() {
@@ -70,7 +72,7 @@ case "$1" in
     restart
     ;;
   condrestart)
-    [ -f /var/lock/subsys/supervisord ] && restart
+    [ -f {{ lockfile }} ] && restart
     ;;
   status)
       {{ status }}
