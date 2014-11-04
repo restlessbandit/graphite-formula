@@ -10,7 +10,6 @@ install-deps:
     - names:
       - memcached
       - python-pip
-      - nginx
       - gcc
 {%- if graphite.dbtype == 'mysql' %}
       - MySQL-python
@@ -177,13 +176,9 @@ restart-supervisor-for-graphite:
     - template: jinja
     - context:
       graphite_host: {{ graphite.host }}
-
-nginx-installed-for-supervisor:
-  service.running:
-    - name: nginx
-    - enable: True
-    - reload: True
-    - watch:
-      - file: /etc/nginx/conf.d/graphite.conf
+    - require_in:
+      - service: nginx
+    - watch_in:
+      - service: nginx
 
 {%- endif %}
