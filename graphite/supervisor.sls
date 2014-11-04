@@ -9,7 +9,9 @@ config-dir:
     - makedirs: True
 
 supervisor:
-  pip.installed
+  pip.installed:
+    - require:
+      - pkg: install-deps
 
 /etc/supervisord.conf:
   file.managed:
