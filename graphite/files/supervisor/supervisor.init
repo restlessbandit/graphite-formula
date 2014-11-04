@@ -25,15 +25,17 @@
 {% if os_family == 'RedHat' %}
     {% set source_fns = "/etc/rc.d/init.d/functions" %}
     {% set daemon = "daemon supervisord" %}
-    {% set killproc = "killproc" %}
     {% set status = "status supervisord" %}
     {% set lockfile = "/var/lock/subsys/supervisord" %}
 {% elif os_family == 'Debian' %}
     {% set source_fns = "/lib/lsb/init-functions" %}
     {% set daemon = "start-stop-daemon --start --quiet --exec /usr/local/bin/supervisord" %}
-    {% set killproc = "pkill" %}
     {% set status = "status_of_proc $(which supervisord) supervisord" %}
     {% set lockfile = "/var/lock/supervisord" %}
+
+killproc() {
+    kill $(pidofproc $1)
+}
 {% endif %}
 
 # source function library
@@ -51,7 +53,7 @@ start() {
 
 stop() {
     echo -n $"Stopping supervisord: "
-    {{ killproc }} $(which supervisord)
+    killproc supervisord
     echo
     [ $RETVAL -eq 0 ] && rm -f {{ lockfile }}
 }
