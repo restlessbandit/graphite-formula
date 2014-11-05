@@ -153,9 +153,11 @@ local-dirs:
 
 {%- if graphite.dbtype == 'sqlite3' %}
 initialize-graphite-db-sqlite3:
-  cmd.run:
+  cmd.wait:
     - cwd: {{ graphite.prefix }}/webapp/graphite
     - name:  python manage.py syncdb --noinput
+    - watch:
+      - file: {{ graphite.prefix }}/webapp/graphite/initial_data.yaml
 {%- endif %}
 
 /etc/supervisor/conf.d/graphite.conf:
@@ -176,6 +178,8 @@ restart-supervisor-for-graphite:
     - template: jinja
     - context:
       graphite_host: {{ graphite.host }}
+    - require:
+      - file: /etc/nginx/conf.d/default.conf
     - require_in:
       - service: nginx
     - watch_in:
