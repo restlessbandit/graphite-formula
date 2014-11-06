@@ -1,8 +1,6 @@
 include:
   - graphite.supervisor
 
-{%- if 'monitor_master' in salt['grains.get']('roles', []) %}
-
 {%- from 'graphite/settings.sls' import graphite with context %}
 
 install-deps:
@@ -184,5 +182,3 @@ restart-supervisor-for-graphite:
       - service: nginx
     - watch_in:
       - service: nginx
-
-{%- endif %}
