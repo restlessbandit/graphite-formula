@@ -119,6 +119,7 @@ local-dirs:
       dbpassword: {{ graphite.dbpassword }}
       dbhost: {{ graphite.dbhost }}
       dbport: {{ graphite.dbport }}
+      webport: {{ salt['pillar.get']('graphite:config:web_port', 80) }}
 
 # django database fixtures
 {{ graphite.prefix }}/webapp/graphite/initial_data.yaml:
