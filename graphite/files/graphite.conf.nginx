@@ -9,6 +9,10 @@ server {
   rewrite ^/admin(.*)admin/([^/]+)/([^/]+)/([^/]+)$ /media/$2/$3/$4 redirect;
   rewrite ^/admin(.*)admin/([^/]+)/([^/]+)$ /media/$2/$3 redirect;
 
+  location /media {
+    alias /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/admin/;
+  }
+
   location ^~ / {
     proxy_pass              http://localhost:8080;
     proxy_set_header        Host $host;
