@@ -4,6 +4,11 @@ server {
   listen {{ webport }};
   server_name {{ graphite_host }};
 
+  # django 1.4+ moved admin static media,
+  # graphite has no release yet that compensates
+  rewrite ^/admin(.*)admin/([^/]+)/([^/]+)/([^/]+)$ /media/$2/$3/$4 redirect;
+  rewrite ^/admin(.*)admin/([^/]+)/([^/]+)$ /media/$2/$3 redirect;
+
   location ^~ / {
     proxy_pass              http://localhost:8080;
     proxy_set_header        Host $host;
