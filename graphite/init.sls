@@ -6,7 +6,6 @@ include:
 install-deps:
   pkg.installed:
     - names:
-      - memcached
       - python-pip
       - gcc
 {%- if graphite.dbtype == 'mysql' %}
