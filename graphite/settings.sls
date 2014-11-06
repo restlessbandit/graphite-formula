@@ -3,7 +3,7 @@
 {% set g  = salt['grains.get']('graphite', {}) %}
 {% set gc = g.get('config', {}) %}
 
-{%- set host = salt['mine.get']('roles:monitor_master', 'network.interfaces', 'grain').keys()|first() %}
+{%- set host = salt['mine.get']('roles:graphite', 'network.interfaces', 'grain').keys()|first() %}
 
 {%- if host is not defined %}
 {%- set host = 'graphite' %}
