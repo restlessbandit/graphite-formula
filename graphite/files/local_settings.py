@@ -195,3 +195,4 @@ DATABASES = {
 # See https://docs.djangoproject.com/en/1.5/ref/settings/
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "*"]
 
+USE_X_FORWARDED_HOST = True

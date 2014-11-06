@@ -1,12 +1,13 @@
 server {
-  listen {{ salt['pillar.get']('graphite:config:web_port', 80) }};
-  {%- set default_hostname = salt['grains.get']('fqdn', 'monitor') %}
+  {%- set webport = salt['pillar.get']('graphite:config:web_port', 80) %}
+  listen {{ webport }};
   server_name {{ graphite_host }};
 
   location ^~ / {
     proxy_pass              http://localhost:8080;
     proxy_set_header        Host $host;
     proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-Host $host{{ '' if webport == 80 else ':' + webport|str }};
     proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_connect_timeout   150;
     proxy_send_timeout      100;
