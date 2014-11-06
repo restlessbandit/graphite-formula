@@ -1,3 +1,6 @@
+include:
+  - graphite
+
 config-dir:
   file.directory:
     - names:
