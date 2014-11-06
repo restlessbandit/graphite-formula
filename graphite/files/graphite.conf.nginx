@@ -1,5 +1,5 @@
 server {
-  listen {{ __salt__['pillar.get']('graphite:config:frontend_port', 80) }};
+  listen {{ __salt__['pillar.get']('graphite:config:web_port', 80) }};
   {%- set default_hostname = salt['grains.get']('fqdn', 'monitor') %}
   server_name {{ graphite_host }};
 
