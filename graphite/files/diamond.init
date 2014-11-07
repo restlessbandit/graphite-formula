@@ -28,7 +28,11 @@ SCRIPTNAME=/etc/init.d/diamond
 LOCKDIR=/var/lock/subsys
 LOCKFILE=/var/lock/subsys/diamond
 
+{%- if grains['os_family'] == 'RedHat' %}
 . /etc/rc.d/init.d/functions
+{%- elif grains['os_family'] == 'Debian' %}
+. /lib/lsb/init-functions
+{%- endif %}
 
 start() {
   if [ -d "${LOCKDIR}" -a -w "${LOCKDIR}" ]
