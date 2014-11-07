@@ -35,6 +35,9 @@ LOCKFILE=/var/lock/subsys/diamond
 echo_failure() { # I have no idea what I'm doing
   echo "failure"
 }
+echo_success() {
+  echo "success" # yeah that's probly right
+}
 daemon() {
   start-stop-daemon --pidfile $PIDFILE --start --quiet --exec $DAEMON -- $DAEMON_ARGS
 }
