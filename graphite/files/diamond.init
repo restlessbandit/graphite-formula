@@ -32,6 +32,9 @@ LOCKFILE=/var/lock/subsys/diamond
 . /etc/rc.d/init.d/functions
 {%- elif grains['os_family'] == 'Debian' %}
 . /lib/lsb/init-functions
+echo_failure() { # I have no idea what I'm doing
+  echo "failure"
+}
 {%- endif %}
 
 start() {
