@@ -29,6 +29,7 @@ pip-install-diamond:
   file.managed:
     - source: salt://graphite/files/diamond/diamond.conf
     - mode: 644
+    - makedirs: True
     - template: jinja
     - require:
       - cmd: pip-install-diamond
@@ -37,6 +38,7 @@ pip-install-diamond:
   file.managed:
     - source: salt://graphite/files/diamond/handlers/GraphiteHandler.conf
     - mode: 644
+    - makedirs: True
     - template: jinja
     - context:
       graphite_host: {{ graphite.host }}
@@ -49,6 +51,7 @@ pip-install-diamond:
   file.managed:
     - source: salt://graphite/files/diamond/handlers/GraphitePickleHandler.conf
     - mode: 644
+    - makedirs: True
     - template: jinja
     - context:
       graphite_host: {{ graphite.host }}
